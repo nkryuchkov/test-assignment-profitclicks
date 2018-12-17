@@ -1,6 +1,7 @@
 package api
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
 
@@ -39,6 +40,10 @@ func New(config *Config, log *logger.Logger, service *service.Service) *API {
 
 // Start starts the API server.
 func (api *API) Start() error {
+	if api.server != nil {
+		return errors.New("API already started")
+	}
+
 	api.log.Infof("Starting API")
 
 	r := mux.NewRouter()
@@ -57,5 +62,9 @@ func (api *API) Start() error {
 
 // Shutdown shuts down the server.
 func (api *API) Shutdown() error {
+	if api.server == nil {
+		return errors.New("API is not started")
+	}
+
 	return api.server.Shutdown(nil)
 }
