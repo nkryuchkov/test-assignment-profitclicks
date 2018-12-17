@@ -106,7 +106,13 @@ func (s *Service) GetListResult(uid string) (int64, error) {
 		return 0, errors.Wrapf(err, "could not get list numbers")
 	}
 
-	return s.mapOperationToFunc(operation)(numbers), nil
+	result := s.mapOperationToFunc(operation)(numbers)
+
+	if err = s.storage.LogResult(s.formatLog(operation, result)); err != nil {
+		return 0, errors.Wrapf(err, "could not log result")
+	}
+
+	return result, nil
 }
 
 func (s *Service) generateUID() string {
@@ -115,4 +121,8 @@ func (s *Service) generateUID() string {
 	uid := fmt.Sprintf("%x", sha1.Sum([]byte(str)))
 
 	return uid
+}
+
+func (s *Service) formatLog(operation string, result int64) string {
+	return fmt.Sprintf("<%s><%d>", operation, result)
 }

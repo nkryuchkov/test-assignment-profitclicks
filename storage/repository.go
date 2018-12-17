@@ -48,3 +48,9 @@ func (s *Storage) GetListNumbers(uid string) ([]int64, error) {
 	err := s.getConnection().Select(&numbers, "SELECT `value` FROM `numbers` WHERE `list_uid` = (?)", uid)
 	return numbers, err
 }
+
+// LogResult inserts a new log entry with the given text and current timestamp into the logs table.
+func (s *Storage) LogResult(text string) error {
+	_, err := s.getConnection().Exec("INSERT INTO `logs` (`text`) VALUES (CONCAT((?), '<', NOW(),'>'))", text)
+	return err
+}
