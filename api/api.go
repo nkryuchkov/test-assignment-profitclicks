@@ -48,7 +48,7 @@ func (api *API) Start() error {
 	s.HandleFunc("/list", api.addNumberList).Methods("POST")
 	s.HandleFunc("/list", api.deleteNumberList).Methods("DELETE")
 	s.HandleFunc("/operation", api.addOperationToList).Methods("POST")
-	s.HandleFunc("/operation", api.getListResult).Methods("GET")
+	s.HandleFunc("/result", api.getListResult).Methods("GET")
 
 	server := &http.Server{Addr: ":" + strconv.Itoa(api.config.Port), Handler: r}
 	api.server = server

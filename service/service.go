@@ -85,8 +85,28 @@ func (s *Service) AddOperationToList(uid, operation string) error {
 	return s.storage.AddOperationToList(uid, operation)
 }
 
-func (s *Service) GetListResult(listID string) (int, error) {
-	return 0, nil
+// GetListResult fetches an operation for the list with given UID, fetches a list of numbers in that list,
+// performs the operation on the list and returns its result.
+func (s *Service) GetListResult(uid string) (int64, error) {
+	exist, err := s.storage.DoesNumberListExist(uid)
+	if err != nil {
+		return 0, errors.Wrapf(err, "could not check if number list exists")
+	}
+	if !exist {
+		return 0, ErrListNotExists
+	}
+
+	operation, err := s.storage.GetListOperation(uid)
+	if err != nil {
+		return 0, errors.Wrapf(err, "could not get list operation")
+	}
+
+	numbers, err := s.storage.GetListNumbers(uid)
+	if err != nil {
+		return 0, errors.Wrapf(err, "could not get list numbers")
+	}
+
+	return s.mapOperationToFunc(operation)(numbers), nil
 }
 
 func (s *Service) generateUID() string {

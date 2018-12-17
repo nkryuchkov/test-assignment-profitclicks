@@ -25,7 +25,7 @@ func (s *Storage) DeleteNumberList(uid string) error {
 // DoesNumberListExist checks if a number list with given UID exists.
 func (s *Storage) DoesNumberListExist(uid string) (bool, error) {
 	var cnt int
-	err := s.getConnection().Get(&cnt, "SELECT COUNT(uid) FROM `lists` WHERE `uid` = (?)", uid)
+	err := s.getConnection().Get(&cnt, "SELECT COUNT(`uid`) FROM `lists` WHERE `uid` = (?)", uid)
 	return cnt > 0, err
 }
 
@@ -33,4 +33,18 @@ func (s *Storage) DoesNumberListExist(uid string) (bool, error) {
 func (s *Storage) AddOperationToList(uid, operation string) error {
 	_, err := s.getConnection().Exec("UPDATE `lists` SET `operation` = (?) WHERE `uid` = (?)", operation, uid)
 	return err
+}
+
+// GetListOperation returns an operation that is set for the list with given UID.
+func (s *Storage) GetListOperation(uid string) (string, error) {
+	var operation string
+	err := s.getConnection().Get(&operation, "SELECT `operation` FROM `lists` WHERE `uid` = (?)", uid)
+	return operation, err
+}
+
+// GetListNumbers gets the list of numbers that relate to the number list with given UID.
+func (s *Storage) GetListNumbers(uid string) ([]int64, error) {
+	var numbers []int64
+	err := s.getConnection().Select(&numbers, "SELECT `value` FROM `numbers` WHERE `list_uid` = (?)", uid)
+	return numbers, err
 }
