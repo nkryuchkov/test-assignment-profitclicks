@@ -30,7 +30,7 @@ func main() {
 
 	database := storage.New(cfg.Storage, l)
 	if err = database.Connect(); err != nil {
-		l.Fatalf("Can't establish connection to database: %v", err)
+		l.Errorf("Can't establish connection to database: %v", err)
 		return
 	}
 
@@ -39,6 +39,11 @@ func main() {
 			l.Errorf("Could not close database: %v", err)
 		}
 	}()
+
+	if err = database.CreateSchemaIfNotExists(); err != nil {
+		l.Errorf("Could not create database schema: %v", err)
+		return
+	}
 
 	s := service.New(l, database)
 
