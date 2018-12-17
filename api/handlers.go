@@ -98,7 +98,40 @@ func (api *API) deleteNumberList(w http.ResponseWriter, r *http.Request) {
 }
 
 func (api *API) addOperationToList(w http.ResponseWriter, r *http.Request) {
+	api.setHeaders(w)
 
+	vars := r.URL.Query()
+
+	uids, ok := vars["uid"]
+	if !ok || len(uids) == 0 {
+		api.writeError(w, "no UID specified", http.StatusBadRequest)
+		return
+	}
+	uid := uids[0]
+
+	names, ok := vars["name"]
+	if !ok || len(uids) == 0 {
+		api.writeError(w, "no name specified", http.StatusBadRequest)
+		return
+	}
+	name := names[0]
+
+	err := api.service.AddOperationToList(uid, name)
+	if err == service.ErrListNotExists {
+		api.writeError(w, "list with the given UID does not exist", http.StatusBadRequest)
+		return
+	}
+	if err == service.ErrOperationNotExists {
+		api.writeError(w, "operation with the given name does not exist", http.StatusBadRequest)
+		return
+	}
+	if err != nil {
+		api.log.Errorf("Could not add operation to list: %v", err)
+		api.writeError(w, "could not add operation to list", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
 }
 
 func (api *API) getListResult(w http.ResponseWriter, r *http.Request) {

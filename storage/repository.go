@@ -28,3 +28,9 @@ func (s *Storage) DoesNumberListExist(uid string) (bool, error) {
 	err := s.getConnection().Get(&cnt, "SELECT COUNT(uid) FROM `lists` WHERE `uid` = (?)", uid)
 	return cnt > 0, err
 }
+
+// AddOperationToList adds an operation to the list with given UID.
+func (s *Storage) AddOperationToList(uid, operation string) error {
+	_, err := s.getConnection().Exec("UPDATE `lists` SET `operation` = (?) WHERE `uid` = (?)", operation, uid)
+	return err
+}

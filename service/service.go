@@ -13,7 +13,8 @@ import (
 )
 
 var (
-	ErrListNotExists = errors.New("list with this UID does not exist")
+	ErrListNotExists      = errors.New("list with this UID does not exist")
+	ErrOperationNotExists = errors.New("operation with this name does not exist")
 )
 
 // Service represents a structure which methods provide the app business logic.
@@ -56,11 +57,32 @@ func (s *Service) AddNumberList() (string, error) {
 
 // DeleteNumberList deletes a number list from storage.
 func (s *Service) DeleteNumberList(uid string) error {
+	exist, err := s.storage.DoesNumberListExist(uid)
+	if err != nil {
+		return errors.Wrapf(err, "could not check if number list exists")
+	}
+	if !exist {
+		return ErrListNotExists
+	}
+
 	return s.storage.DeleteNumberList(uid)
 }
 
-func (s *Service) AddOperationToList(listID string, operationName int64) error {
-	return nil
+// AddOperationToList adds an operation to the list.
+func (s *Service) AddOperationToList(uid, operation string) error {
+	exist, err := s.storage.DoesNumberListExist(uid)
+	if err != nil {
+		return errors.Wrapf(err, "could not check if number list exists")
+	}
+	if !exist {
+		return ErrListNotExists
+	}
+
+	if !s.isAllowedOperation(operation) {
+		return ErrOperationNotExists
+	}
+
+	return s.storage.AddOperationToList(uid, operation)
 }
 
 func (s *Service) GetListResult(listID string) (int, error) {
