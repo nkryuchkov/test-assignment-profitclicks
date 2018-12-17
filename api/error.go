@@ -5,14 +5,12 @@ import (
 	"net/http"
 )
 
-type Error struct {
-	Error string `json:"error"`
-}
-
 func (api *API) writeError(w http.ResponseWriter, text string, statusCode int) {
 	w.WriteHeader(statusCode)
 
-	e := Error{
+	e := struct {
+		Error string `json:"error"`
+	}{
 		Error: text,
 	}
 

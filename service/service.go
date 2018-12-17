@@ -13,7 +13,9 @@ import (
 )
 
 var (
-	ErrListNotExists      = errors.New("list with this UID does not exist")
+	// ErrListNotExists is an error that occurs when no list with a given UID found.
+	ErrListNotExists = errors.New("list with this UID does not exist")
+	// ErrOperationNotExists is an error that occurs when no operation with a given name found.
 	ErrOperationNotExists = errors.New("operation with this name does not exist")
 )
 

@@ -3,6 +3,7 @@ package storage
 import (
 	"sync"
 
+	// Using a mysql driver.
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 	"github.com/nkryuchkov/test-assignment-profitclicks/logger"
