@@ -23,6 +23,7 @@ type API struct {
 	config  *Config
 	log     *logger.Logger
 	service *service.Service
+	server  *http.Server
 }
 
 // New returns a new API instance.
@@ -49,5 +50,12 @@ func (api *API) Start() error {
 	s.HandleFunc("/operation", api.addOperationToList).Methods("POST")
 	s.HandleFunc("/operation", api.getListResult).Methods("GET")
 
-	return http.ListenAndServe(":"+strconv.Itoa(api.config.Port), r)
+	server := &http.Server{Addr: ":" + strconv.Itoa(api.config.Port), Handler: r}
+	api.server = server
+	return server.ListenAndServe()
+}
+
+// Shutdown shuts down the server.
+func (api *API) Shutdown() error {
+	return api.server.Shutdown(nil)
 }

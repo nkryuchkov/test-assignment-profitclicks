@@ -50,5 +50,11 @@ func main() {
 		}
 	}()
 
+	defer func() {
+		if err = apiServer.Shutdown(); err != nil {
+			l.Printf("Could not shut down API server: %v", err)
+		}
+	}()
+
 	<-quit
 }
