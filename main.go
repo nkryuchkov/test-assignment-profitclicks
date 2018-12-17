@@ -46,7 +46,7 @@ func main() {
 
 	go func() {
 		if err = apiServer.Start(); err != nil {
-			l.Errorf("Server error: %v", err)
+			l.Warnf("API serving finished: %v", err)
 		}
 	}()
 
