@@ -42,6 +42,13 @@ func (s *Storage) Connect() error {
 	return nil
 }
 
+func (s *Storage) getConnection() *sqlx.DB {
+	s.Lock()
+	defer s.Unlock()
+
+	return s.conn
+}
+
 func (s *Storage) setConnection(conn *sqlx.DB) {
 	s.Lock()
 	defer s.Unlock()
