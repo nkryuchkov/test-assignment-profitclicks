@@ -12,6 +12,6 @@
 
   "storage": {
     "driver_name": "mysql",
-    "connection": "root:root@tcp(localhost:3306)/profitclicks"
+    "connection": "profitclicks:profitclicks@tcp(localhost:3306)/profitclicks"
   }
 }
