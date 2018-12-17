@@ -36,7 +36,7 @@ func main() {
 
 	defer func() {
 		if err = database.Close(); err != nil {
-			l.Printf("Could not close database: %v", err)
+			l.Errorf("Could not close database: %v", err)
 		}
 	}()
 
@@ -46,13 +46,13 @@ func main() {
 
 	go func() {
 		if err = apiServer.Start(); err != nil {
-			l.Fatalf("Server error: %v", err)
+			l.Errorf("Server error: %v", err)
 		}
 	}()
 
 	defer func() {
 		if err = apiServer.Shutdown(); err != nil {
-			l.Printf("Could not shut down API server: %v", err)
+			l.Errorf("Could not shut down API server: %v", err)
 		}
 	}()
 
