@@ -3,10 +3,47 @@ package api
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
+
+	"github.com/nkryuchkov/test-assignment-profitclicks/service"
 )
 
 func (api *API) addNumberToList(w http.ResponseWriter, r *http.Request) {
+	api.setHeaders(w)
 
+	vars := r.URL.Query()
+
+	uids, ok := vars["uid"]
+	if !ok || len(uids) == 0 {
+		api.writeError(w, "no UID specified", http.StatusBadRequest)
+		return
+	}
+	uid := uids[0]
+
+	numbers, ok := vars["number"]
+	if !ok || len(uids) == 0 {
+		api.writeError(w, "no number specified", http.StatusBadRequest)
+		return
+	}
+	numberStr := numbers[0]
+	number, err := strconv.ParseInt(numberStr, 10, 64)
+	if err != nil {
+		api.writeError(w, "bad number specified", http.StatusBadRequest)
+		return
+	}
+
+	err = api.service.AddNumberToList(uid, number)
+	if err == service.ErrListNotExists {
+		api.writeError(w, "list with the given UID does not exist", http.StatusBadRequest)
+		return
+	}
+	if err != nil {
+		api.log.Errorf("Could not add number to list: %v", err)
+		api.writeError(w, "could not add number to list", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
 }
 
 func (api *API) addNumberList(w http.ResponseWriter, r *http.Request) {

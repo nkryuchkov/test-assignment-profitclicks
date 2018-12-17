@@ -6,8 +6,14 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/pkg/errors"
+
 	"github.com/nkryuchkov/test-assignment-profitclicks/logger"
 	"github.com/nkryuchkov/test-assignment-profitclicks/storage"
+)
+
+var (
+	ErrListNotExists = errors.New("list with this UID does not exist")
 )
 
 // Service represents a structure which methods provide the app business logic.
@@ -24,7 +30,20 @@ func New(log *logger.Logger, storage *storage.Storage) *Service {
 	}
 }
 
-func (s *Service) AddNumberToList(listID string, number int64) error {
+// AddNumberToList adds a new number to the list with given UID.
+func (s *Service) AddNumberToList(uid string, number int64) error {
+	exist, err := s.storage.DoesNumberListExist(uid)
+	if err != nil {
+		return errors.Wrapf(err, "could not check if number list exists")
+	}
+	if !exist {
+		return ErrListNotExists
+	}
+
+	if err = s.storage.AddNumberToList(uid, number); err != nil {
+		return err
+	}
+
 	return nil
 }
 
