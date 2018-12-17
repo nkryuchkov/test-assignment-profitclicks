@@ -8,5 +8,10 @@
 
   "api": {
     "port": 8080
+  },
+
+  "storage": {
+    "driver_name": "mysql",
+    "connection": "root:root@tcp(localhost:3306)/profitclicks"
   }
 }

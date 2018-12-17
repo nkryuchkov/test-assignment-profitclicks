@@ -6,6 +6,8 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/nkryuchkov/test-assignment-profitclicks/storage"
+
 	"github.com/nkryuchkov/test-assignment-profitclicks/api"
 	"github.com/nkryuchkov/test-assignment-profitclicks/logger"
 
@@ -18,8 +20,9 @@ const (
 
 // Config represents an application configuration.
 type Config struct {
-	Logger *logger.Config `json:"logger"`
-	API    *api.Config    `json:"api"`
+	Logger  *logger.Config  `json:"logger"`
+	API     *api.Config     `json:"api"`
+	Storage *storage.Config `json:"storage"`
 }
 
 // FromFile reads a config from the file specified in `filename`.
