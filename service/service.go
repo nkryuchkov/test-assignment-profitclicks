@@ -2,17 +2,20 @@ package service
 
 import (
 	"github.com/nkryuchkov/test-assignment-profitclicks/logger"
+	"github.com/nkryuchkov/test-assignment-profitclicks/storage"
 )
 
 // Service represents a structure which methods provide the app business logic.
 type Service struct {
-	log *logger.Logger
+	log     *logger.Logger
+	storage *storage.Storage
 }
 
 // New returns a new service instance.
-func New(log *logger.Logger) *Service {
+func New(log *logger.Logger, storage *storage.Storage) *Service {
 	return &Service{
-		log: log,
+		log:     log,
+		storage: storage,
 	}
 }
 
