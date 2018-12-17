@@ -31,6 +31,11 @@ func New(config *Config, log *logger.Logger) *Storage {
 	}
 }
 
+// Close closes the database instance.
+func (s *Storage) Close() error {
+	return s.getConnection().Close()
+}
+
 // Connect connects to the storage instance.
 func (s *Storage) Connect() error {
 	conn, err := sqlx.Connect(s.config.DriverName, s.config.Connection)

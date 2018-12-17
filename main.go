@@ -34,6 +34,12 @@ func main() {
 		return
 	}
 
+	defer func() {
+		if err = database.Close(); err != nil {
+			l.Printf("Could not close database: %v", err)
+		}
+	}()
+
 	s := service.New(l, database)
 
 	apiServer := api.New(cfg.API, l, s)
