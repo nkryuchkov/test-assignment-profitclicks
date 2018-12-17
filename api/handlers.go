@@ -15,7 +15,7 @@ func (api *API) addNumberList(w http.ResponseWriter, r *http.Request) {
 	uid, err := api.service.AddNumberList()
 	if err != nil {
 		api.log.Errorf("Could not add number list: %v", err)
-		api.writeError(w, "could not add number list")
+		api.writeError(w, "could not add number list", http.StatusInternalServerError)
 		return
 	}
 
@@ -28,7 +28,7 @@ func (api *API) addNumberList(w http.ResponseWriter, r *http.Request) {
 	data, err := json.Marshal(resp)
 	if err != nil {
 		api.log.Errorf("Could not marshal JSON: %v", err)
-		api.writeError(w, "could not marshal JSON")
+		api.writeError(w, "could not marshal JSON", http.StatusInternalServerError)
 		return
 	}
 
@@ -40,7 +40,24 @@ func (api *API) addNumberList(w http.ResponseWriter, r *http.Request) {
 }
 
 func (api *API) deleteNumberList(w http.ResponseWriter, r *http.Request) {
+	api.setHeaders(w)
 
+	vars := r.URL.Query()
+
+	uids, ok := vars["uid"]
+	if !ok || len(uids) == 0 {
+		api.writeError(w, "no uid specified", http.StatusBadRequest)
+		return
+	}
+	uid := uids[0]
+
+	if err := api.service.DeleteNumberList(uid); err != nil {
+		api.log.Errorf("Could not delete number list: %v", err)
+		api.writeError(w, "could not delete number list", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
 }
 
 func (api *API) addOperationToList(w http.ResponseWriter, r *http.Request) {

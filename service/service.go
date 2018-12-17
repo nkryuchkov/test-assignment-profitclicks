@@ -35,8 +35,9 @@ func (s *Service) AddNumberList() (string, error) {
 	return uid, err
 }
 
-func (s *Service) DeleteNumberList(listID string) error {
-	return nil
+// DeleteNumberList deletes a number list from storage.
+func (s *Service) DeleteNumberList(uid string) error {
+	return s.storage.DeleteNumberList(uid)
 }
 
 func (s *Service) AddOperationToList(listID string, operationName int64) error {
