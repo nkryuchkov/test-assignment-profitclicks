@@ -1,6 +1,11 @@
 package service
 
 import (
+	"crypto/sha1"
+	"fmt"
+	"strconv"
+	"time"
+
 	"github.com/nkryuchkov/test-assignment-profitclicks/logger"
 	"github.com/nkryuchkov/test-assignment-profitclicks/storage"
 )
@@ -23,8 +28,11 @@ func (s *Service) AddNumberToList(listID string, number int64) error {
 	return nil
 }
 
+// AddNumberList adds a new number list to storage.
 func (s *Service) AddNumberList() (string, error) {
-	return "", nil
+	uid := s.generateUID()
+	err := s.storage.AddNumberList(uid)
+	return uid, err
 }
 
 func (s *Service) DeleteNumberList(listID string) error {
@@ -37,4 +45,12 @@ func (s *Service) AddOperationToList(listID string, operationName int64) error {
 
 func (s *Service) GetListResult(listID string) (int, error) {
 	return 0, nil
+}
+
+func (s *Service) generateUID() string {
+	t := time.Now().UnixNano()
+	str := strconv.FormatInt(t, 10)
+	uid := fmt.Sprintf("%x", sha1.Sum([]byte(str)))
+
+	return uid
 }
