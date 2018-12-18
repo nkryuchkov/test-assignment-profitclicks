@@ -46,7 +46,7 @@ func (api *API) Start() error {
 
 	api.log.Infof("Starting API")
 
-	r := mux.NewRouter()
+	r := mux.NewRouter().StrictSlash(true)
 	s := r.PathPrefix(v1Prefix).Subrouter()
 
 	s.HandleFunc("/number", api.addNumberToList).Methods("POST")
