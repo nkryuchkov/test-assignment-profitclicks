@@ -7,6 +7,10 @@
 5) В `config.json` прописать строку соединения к MySQL и изменить другие параметры при необходимости.
 6) Скомпилировать и запустить либо запустить через `go run main.go`.
 
+# GoDoc
+
+https://godoc.org/github.com/nkryuchkov/test-assignment-profitclicks
+
 # API
 
 В качестве префикса API необходимо использовать `/api/v1`, т. е. для роута `GET /example` нужно сделать запрос `GET http://host:port/api/v1/example`.
