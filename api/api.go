@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
+
 	"github.com/nkryuchkov/test-assignment-profitclicks/logger"
 	"github.com/nkryuchkov/test-assignment-profitclicks/service"
 )

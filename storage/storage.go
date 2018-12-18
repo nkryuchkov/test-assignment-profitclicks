@@ -6,8 +6,9 @@ import (
 	// Using a mysql driver.
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
-	"github.com/nkryuchkov/test-assignment-profitclicks/logger"
 	"github.com/pkg/errors"
+
+	"github.com/nkryuchkov/test-assignment-profitclicks/logger"
 )
 
 // Config represents a storage configuration.

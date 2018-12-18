@@ -6,12 +6,11 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/nkryuchkov/test-assignment-profitclicks/storage"
+	"github.com/pkg/errors"
 
 	"github.com/nkryuchkov/test-assignment-profitclicks/api"
 	"github.com/nkryuchkov/test-assignment-profitclicks/logger"
-
-	"github.com/pkg/errors"
+	"github.com/nkryuchkov/test-assignment-profitclicks/storage"
 )
 
 const (
