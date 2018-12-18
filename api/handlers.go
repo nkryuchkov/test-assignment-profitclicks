@@ -20,7 +20,7 @@ func (api *API) addNumberToList(w http.ResponseWriter, r *http.Request) {
 	uid := uids[0]
 
 	numbers, ok := vars["number"]
-	if !ok || len(uids) == 0 {
+	if !ok || len(numbers) == 0 {
 		api.error(w, "no number specified", http.StatusBadRequest)
 		return
 	}
@@ -98,7 +98,7 @@ func (api *API) addOperationToList(w http.ResponseWriter, r *http.Request) {
 	uid := uids[0]
 
 	names, ok := vars["name"]
-	if !ok || len(uids) == 0 {
+	if !ok || len(names) == 0 {
 		api.error(w, "no name specified", http.StatusBadRequest)
 		return
 	}
