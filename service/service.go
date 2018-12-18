@@ -17,6 +17,8 @@ var (
 	ErrListNotExists = errors.New("list with this UID does not exist")
 	// ErrOperationNotExists is an error that occurs when no operation with a given name found.
 	ErrOperationNotExists = errors.New("operation with this name does not exist")
+	// ErrNoOperationSet is an error that occurs when no operation is set for a given list.
+	ErrNoOperationSet = errors.New("no operation set for this list")
 )
 
 // Service represents a structure which methods provide the app business logic.
@@ -103,14 +105,18 @@ func (s *Service) GetListResult(uid string) (int64, error) {
 		return 0, errors.Wrapf(err, "could not get list operation")
 	}
 
+	if operation == nil {
+		return 0, ErrNoOperationSet
+	}
+
 	numbers, err := s.storage.GetListNumbers(uid)
 	if err != nil {
 		return 0, errors.Wrapf(err, "could not get list numbers")
 	}
 
-	result := s.mapOperationToFunc(operation)(numbers)
+	result := s.mapOperationToFunc(*operation)(numbers)
 
-	if err = s.storage.LogResult(s.formatLog(operation, result)); err != nil {
+	if err = s.storage.LogResult(s.formatLog(*operation, result)); err != nil {
 		return 0, errors.Wrapf(err, "could not log result")
 	}
 

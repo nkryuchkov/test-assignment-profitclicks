@@ -36,8 +36,8 @@ func (s *Storage) AddOperationToList(uid, operation string) error {
 }
 
 // GetListOperation returns an operation that is set for the list with given UID.
-func (s *Storage) GetListOperation(uid string) (string, error) {
-	var operation string
+func (s *Storage) GetListOperation(uid string) (*string, error) {
+	var operation *string
 	err := s.getConnection().Get(&operation, "SELECT `operation` FROM `lists` WHERE `uid` = (?)", uid)
 	return operation, err
 }

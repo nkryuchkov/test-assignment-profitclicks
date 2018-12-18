@@ -140,6 +140,11 @@ func (api *API) getListResult(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if err == service.ErrNoOperationSet {
+		api.error(w, "no operation set for this list", http.StatusBadRequest)
+		return
+	}
+
 	if err != nil {
 		api.log.Errorf("Could not get list result: %v", err)
 		api.error(w, "could not get list result", http.StatusInternalServerError)
