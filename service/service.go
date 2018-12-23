@@ -45,11 +45,7 @@ func (s *Service) AddNumberToList(uid string, number int64) error {
 		return ErrListNotExists
 	}
 
-	if err = s.storage.AddNumberToList(uid, number); err != nil {
-		return err
-	}
-
-	return nil
+	return s.storage.AddNumberToList(uid, number)
 }
 
 // AddNumberList adds a new number list to storage.
