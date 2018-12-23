@@ -1,3 +1,7 @@
+[![Go Report Card](http://goreportcard.com/badge/nkryuchkov/test-assignment-profitclicks)](http://goreportcard.com/report/nkryuchkov/test-assignment-profitclicks)
+[![GoDoc](https://godoc.org/github.com/nkryuchkov/test-assignment-profitclicks?status.svg)](https://godoc.org/github.com/nkryuchkov/test-assignment-profitclicks)
+[![GitHub license](https://img.shields.io/github/license/nkryuchkov/test-assignment-profitclicks.svg)](https://github.com/nkryuchkov/test-assignment-profitclicks/blob/master/LICENSE)
+
 # Как запустить
 
 1) Запустить MySQL.
@@ -6,10 +10,6 @@
 4) Скопировать `config.example.json` в `config.json`
 5) В `config.json` прописать строку соединения к MySQL и изменить другие параметры при необходимости.
 6) Скомпилировать и запустить либо запустить через `go run main.go`.
-
-# GoDoc
-
-https://godoc.org/github.com/nkryuchkov/test-assignment-profitclicks
 
 # API
 
