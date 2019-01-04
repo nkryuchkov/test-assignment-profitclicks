@@ -1,6 +1,7 @@
 package api
 
 import (
+	"context"
 	"errors"
 	"net/http"
 	"strconv"
@@ -67,5 +68,6 @@ func (api *API) Shutdown() error {
 		return errors.New("API is not started")
 	}
 
-	return api.server.Shutdown(nil)
+	ctx := context.Background()
+	return api.server.Shutdown(ctx)
 }
