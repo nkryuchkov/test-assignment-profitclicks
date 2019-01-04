@@ -21,7 +21,7 @@ func (api *API) error(w http.ResponseWriter, text string, statusCode int) {
 		return
 	}
 
-	if _, err = w.Write([]byte(data)); err != nil {
+	if _, err = w.Write(data); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		api.log.Errorf("Could not write error: %v", err)
 	}

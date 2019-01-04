@@ -15,7 +15,7 @@ func (api *API) json(w http.ResponseWriter, v interface{}, statusCode int) {
 		return
 	}
 
-	if _, err = w.Write([]byte(data)); err != nil {
+	if _, err = w.Write(data); err != nil {
 		api.log.Errorf("Could not write error: %v", err)
 		api.error(w, "could not marshal JSON", http.StatusInternalServerError)
 	}
